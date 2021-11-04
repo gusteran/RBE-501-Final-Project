@@ -7,13 +7,15 @@ classdef Drone
         DroneMap
         X
         Y
-        DeltaX
-        DeltaY
+        DeltaX double
+        DeltaY double
         MaxSpeed
         Acceleration
         KDistance = 0.25;
         DDerivative = 1;
         SensingDistance = 3;
+        MaxMoves = 1000;
+        Moves = 0;
     end
     
     methods
@@ -31,6 +33,53 @@ classdef Drone
             if maxSpeed > 2 * obj.SensingDistance
                 disp("Warning!!! Max speed of drone is too great for the sensing capability currently set. The drone may fly faster than its sensing area.")
             end
+        end
+
+        function boundary = getBoundary(obj)
+            obj = obj.sense();
+            robotX = round(obj.X)+1;
+            robotY = round(obj.Y)+1;
+            map = obj.DroneMap == 0;
+
+%             val = obj.SensingDistance;
+%             figure
+%             show(occupancyMap(map))
+%             bwimage = mat2gray(map);
+%             figure
+%             imshow(bwimage)
+%             disp(bwimage)
+%             se = offsetstrel('ball',10, 10);
+%             erodedImage = imerode(bwimage,se);
+% %             map = gray2mat(erodedImage);
+%             figure
+%             imshow(erodedImage)
+%             xlim([-100, 100])
+%             ylim([-100, 100])
+%             title('dilated image')
+%             map = erodedImage >= -2.9;
+%             disp(erodedImage)
+%             disp("Length of pixels")
+%             disp(length(erodedImage(erodedImage >= 0)))
+%             figure
+%             show(occupancyMap(map))
+
+            for i = 1:obj.SensingDistance
+
+                pixel = robotY+1;
+                for i = robotY:size(obj.TrueMap, 1)
+                    if map(i, robotX) > 0
+                        pixel = i;
+                        break;
+                    end
+                end
+                boundary = bwtraceboundary(map, [pixel, robotX], 'N');
+    
+                for j = 1:size(boundary, 1)
+                    map(boundary(j,1), boundary(j,2)) = 0;
+                end
+            end
+%             figure
+%             show(occupancyMap(map))
         end
 
         function obj = navigateToPoint(obj, targetX, targetY)
@@ -69,8 +118,14 @@ classdef Drone
 
     methods (Access = private)
         function obj = move(obj)
-            obj.X = obj.X + obj.DeltaX;
-            obj.Y = obj.Y + obj.DeltaY;
+%             disp([obj.DeltaX, obj.DeltaY])
+            obj.Moves = obj.Moves + 1;
+            if obj.Moves < obj.MaxMoves
+                obj.X = obj.X + obj.DeltaX;
+                obj.Y = obj.Y + obj.DeltaY;
+            else
+                disp("Out of moves for the experiment!")
+            end
         end
 
         function obj = accelerateToPoint(obj, targetX, targetY)
