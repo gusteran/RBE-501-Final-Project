@@ -62,7 +62,7 @@ classdef Drone
         function plot(obj)
             show(occupancyMap(obj.DroneMap));
             hold on
-            plot(obj.X, size(obj.TrueMap,1)-obj.Y, "*");
+            plot(obj.X, size(obj.TrueMap,1)-obj.Y, "Marker", ".", "MarkerSize",10 * obj.SensingDistance, "Color","red");
             hold off
         end
     end
