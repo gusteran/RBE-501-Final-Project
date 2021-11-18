@@ -13,7 +13,7 @@ classdef Drone
         Acceleration
         KDistance = 0.25;
         DDerivative = 1;
-        SensingDistance = 3;
+        SensingDistance = 5;
         MaxMoves = 1000;
         Moves = 0;
     end

@@ -11,7 +11,7 @@ function [drone, poses] = Dynamic_Pathfinding_Algorithm(drone, maxMoves)
     %     target = closestUnexplored(boundary, drone.X, drone.Y);
         targetX = target(1);
         targetY = target(2);
-        if size(poses,1) > 100
+        if size(poses,1) > 20
            speedCoeff = 0.7; 
         end
 %         count = 0;
@@ -22,6 +22,7 @@ function [drone, poses] = Dynamic_Pathfinding_Algorithm(drone, maxMoves)
             poses(end+1,:) = [drone.X, size(map,1)- drone.Y];
         end
     end
+    plot(poses(:,1),poses(:,2),"blue")
 end
 
 function boundary = getBoundary(robotMap, robotX, robotY)
