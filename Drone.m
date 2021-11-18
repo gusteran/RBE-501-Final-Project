@@ -41,28 +41,6 @@ classdef Drone
             robotY = round(obj.Y)+1;
             map = obj.DroneMap == 0;
 
-%             val = obj.SensingDistance;
-%             figure
-%             show(occupancyMap(map))
-%             bwimage = mat2gray(map);
-%             figure
-%             imshow(bwimage)
-%             disp(bwimage)
-%             se = offsetstrel('ball',10, 10);
-%             erodedImage = imerode(bwimage,se);
-% %             map = gray2mat(erodedImage);
-%             figure
-%             imshow(erodedImage)
-%             xlim([-100, 100])
-%             ylim([-100, 100])
-%             title('dilated image')
-%             map = erodedImage >= -2.9;
-%             disp(erodedImage)
-%             disp("Length of pixels")
-%             disp(length(erodedImage(erodedImage >= 0)))
-%             figure
-%             show(occupancyMap(map))
-
             for i = 1:obj.SensingDistance
 
                 pixel = robotY+1;
@@ -105,7 +83,7 @@ classdef Drone
         end
 
         function near = isNear(obj, targetX, targetY)
-            near = hypot(targetX - obj.X, targetY - obj.Y) < obj.SensingDistance;
+            near = ~obj.canMove() | hypot(targetX - obj.X, targetY - obj.Y) < obj.SensingDistance;
         end
 
         function plot(obj)
@@ -113,6 +91,10 @@ classdef Drone
             hold on
             plot(obj.X, size(obj.TrueMap,1)-obj.Y, "Marker", ".", "MarkerSize",10 * obj.SensingDistance, "Color","red");
             hold off
+        end
+        
+        function hasMoves = canMove(obj)
+            hasMoves = obj.Moves < obj.MaxMoves;
         end
     end
 
@@ -123,8 +105,8 @@ classdef Drone
             if obj.Moves < obj.MaxMoves
                 obj.X = obj.X + obj.DeltaX;
                 obj.Y = obj.Y + obj.DeltaY;
-            else
-                disp("Out of moves for the experiment!")
+%             else
+%                 disp("Out of moves for the experiment!")
             end
         end
 
