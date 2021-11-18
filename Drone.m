@@ -2,6 +2,7 @@ classdef Drone
     %DRONE Summary of this class goes here
     %   Detailed explanation goes here
     % Testing
+    %Adding comment for test
     properties
         TrueMap
         DroneMap
