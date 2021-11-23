@@ -3,8 +3,8 @@ function [drone, poses] = Sweep_Search_Algorithm(drone, maxMoves)
 drone.MaxMoves = maxMoves;
 map = drone.TrueMap;
 sensingDistance = 3;
-mapWidth = 100;
-mapHeight = 100; 
+mapWidth = size(drone.TrueMap, 2);
+mapHeight = size(drone.TrueMap, 1); 
 navigating = true;
 
 targetX = [15];
