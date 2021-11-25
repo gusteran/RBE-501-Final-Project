@@ -91,7 +91,7 @@ function heuristic = distanceVelocityHeuristic(dist, normRobot, normPoint, start
 %     normPoint = normPoint;
     diffX = abs(normRobot(1) - normPoint(1));
     diffY = abs(normRobot(2) - normPoint(2));
-    heuristic = dist + startDist + diffX * velocityCoeff + diffY * velocityCoeff;
+    heuristic = dist + 0.75 * startDist + diffX * velocityCoeff + diffY * velocityCoeff;
 end
 
 function dist = distance(a, b)
