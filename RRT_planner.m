@@ -3,7 +3,7 @@ clear
 clc
 
 %loading the seleted map in png format
-image = imread('hwmaze.png');
+image = imread('MapTest2.PNG');
 [rows, columns, numberOfColorChannels] = size(image);
 if numberOfColorChannels > 1
     % It's a true color RGB image.  We need to convert to gray scale.
