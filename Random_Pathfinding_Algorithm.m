@@ -1,18 +1,18 @@
-function [drone, poses] = Dynamic_Pathfinding_Algorithm(drone, maxMoves)
+function [drone, poses] = Random_Pathfinding_Algorithm(drone, maxMoves)
     drone.MaxMoves = maxMoves;
     map = drone.TrueMap;
-    speedCoeff = 0.7;
+    speedCoeff = 0.6;
     poses = [drone.X, size(map,1)- drone.Y];
     startX = drone.X;
     startY = drone.Y;
     while drone.canMove()
         boundary = drone.getBoundary();
-        target = closestUnexploredWithVelocity(boundary, drone.X, drone.Y, drone.DeltaX, drone.DeltaY, startX, startY);
+        target = randomUnexplored(boundary, drone.X, drone.Y);
     %     target = closestUnexplored(boundary, drone.X, drone.Y);
         targetX = target(1);
         targetY = target(2);
         if size(poses,1) > 20
-           speedCoeff = 0.8; 
+           speedCoeff = 0.7; 
         end
 %         count = 0;
         while ~drone.isNear(targetX,targetY)
@@ -55,6 +55,11 @@ function boundaryDist = boundaryWithDistance(boundary, robotX, robotY)
     for i = 1:size(boundary, 1)
         boundaryDist(i,3) = distance([robotY, robotX], boundary(i,:));
     end
+end
+
+function target = randomUnexplored(boundary, robotX, robotY)
+    randomIndex = randi([1, size(boundary, 1)]);
+    target = [boundary(randomIndex,2), boundary(randomIndex,1)];
 end
 
 function closest = closestUnexploredWithVelocity(boundary, robotX, robotY, deltaX, deltaY, startX, startY)

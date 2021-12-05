@@ -15,7 +15,7 @@ yMove = sensingDistance*2;
 
 direction = 'r';
 
-poses = [15,5];
+poses = [drone.X,drone.Y];
 hold on
 
 while navigating == true

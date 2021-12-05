@@ -130,8 +130,10 @@ classdef Drone
             deltaX = (targetX - obj.X);
             deltaY = (targetY - obj.Y);
             normDelta = norm([deltaX, deltaY]);
-            deltaX = deltaX / normDelta * targetSpeed;
-            deltaY = deltaY / normDelta * targetSpeed;
+            if obj.X + deltaX == targetX || obj.Y + deltaY == targetY
+                deltaX = deltaX / normDelta * targetSpeed;
+                deltaY = deltaY / normDelta * targetSpeed;
+            end
             accel = [deltaX-obj.DeltaX, deltaY-obj.DeltaY];
             if hypot(accel(1), accel(2)) > obj.Acceleration
                 accel = accel / norm(accel) * obj.Acceleration;
